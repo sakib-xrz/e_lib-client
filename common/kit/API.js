@@ -1,12 +1,12 @@
 import HTTP from "./HTTP";
-const { client } = HTTP;
+const { client, setClientToken } = HTTP;
 
 const defaultFileUploadConfig = {
   headers: { "Content-Type": "multipart/form-data" },
 };
 
 const API = {
-  setClientToken: HTTP.setClientToken,
+  setClientToken,
 
   auth: {
     register: (payload) => {
