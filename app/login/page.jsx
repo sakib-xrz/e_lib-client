@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,14 +14,19 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
+import { useState } from "react";
+import API from "@/common/kit/API";
+import { toast } from "sonner";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required"),
     password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
+      .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
 
@@ -33,7 +39,32 @@ const Login = () => {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      setLoading(true);
+
+      const payload = {
+        email: values.email,
+        password: values.password,
+      };
+
+      const promise = API.auth
+        .login(payload)
+        .then((data) => {
+          const token = data.data.access;
+          console.log(token);
+          return data;
+        })
+        .catch((error) => {
+          throw error;
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: (data) => data.message,
+        error: (error) => error.message,
+      });
     },
   });
 
@@ -99,9 +130,9 @@ const Login = () => {
               <Button
                 type="submit"
                 className="w-full p-2 rounded-md"
-                disabled={formik.isSubmitting}
+                isLoading={loading}
               >
-                {formik.isSubmitting ? "Logging in..." : "Login"}
+                {loading ? "Loading..." : "Login"}
               </Button>
             </div>
           </form>
