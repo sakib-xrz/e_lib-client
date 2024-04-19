@@ -104,7 +104,7 @@ const Login = () => {
                 <Password
                   id="password"
                   name="password"
-                  placeholder="min 8 characters"
+                  placeholder="min 6 characters"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}

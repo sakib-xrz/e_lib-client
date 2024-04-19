@@ -13,6 +13,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
+import { useState } from "react";
+import API from "@/common/kit/API";
+import { toast } from "sonner";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -35,11 +38,38 @@ const initialValues = {
 };
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      setLoading(true);
+
+      const payload = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      };
+
+      const promise = API.auth
+        .register(payload)
+        .then((data) => {
+          const token = data.data.access;
+          console.log(token);
+          return data;
+        })
+        .catch((error) => {
+          throw error;
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: (data) => data.message,
+        error: (error) => error.message,
+      });
     },
   });
   return (
@@ -97,7 +127,7 @@ const Register = () => {
                 <Password
                   id="password"
                   name="password"
-                  placeholder="min 8 characters"
+                  placeholder="min 6 characters"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
