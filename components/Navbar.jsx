@@ -11,10 +11,12 @@ const Navbar = () => {
   return (
     <>
       <div className="flex justify-around items-center py-5 shadow-lg">
-        <AlignJustify onClick={() => setDrawerOpen(true)} />
+        <div className="md:hidden">
+          <AlignJustify onClick={() => setDrawerOpen(true)} />
+        </div>
 
         <h2 className="font-black text-2xl">E Lib</h2>
-        <div className="list-none md:flex gap-5 font-semibold text-muted-foreground xs:hidden ">
+        <div className="list-none md:flex gap-5 font-semibold text-muted-foreground hidden ">
           <li>Home</li>
           <li>About</li>
           <li>All Books</li>
@@ -29,7 +31,12 @@ const Navbar = () => {
         title={"Test Right Side Drawer"}
         side="left"
       >
-        This is test drawer
+        <div className="list-none flex-col space-y-5 pl-5 font-semibold ">
+          <li>Home</li>
+          <li>About</li>
+          <li>All Books</li>
+          <li>Authors</li>
+        </div>
       </Drawer>
     </>
   );
