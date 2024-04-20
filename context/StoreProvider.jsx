@@ -32,7 +32,7 @@ export default function StoreProvider({ children }) {
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
     if (token) {
       setTokenAndRedirect(token)
-        .then(fetchMe(role))
+        .then(() => fetchMe(role))
         .catch((error) => {
           console.log(error?.response);
         });
@@ -45,7 +45,7 @@ export default function StoreProvider({ children }) {
     router.push("/login");
   };
 
-  const store = { user, fetchMe, refetchMe, logout };
+  const store = { user, setUser, fetchMe, refetchMe, logout };
 
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>

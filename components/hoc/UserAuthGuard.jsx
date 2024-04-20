@@ -5,6 +5,7 @@ import { AUTH_TOKEN_KEY } from "@/common/helpers/KeyChain";
 import { setTokenAndRedirect } from "@/common/helpers/Utils";
 import { useStore } from "@/context/StoreProvider";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function UserAuthGuard({ children }) {
   const { fetchMe, user } = useStore();
@@ -16,7 +17,7 @@ export default function UserAuthGuard({ children }) {
 
     if (token) {
       setTokenAndRedirect(token)
-        .then(fetchMe("user"))
+        .then(() => fetchMe("user"))
         .catch((_error) => {
           router.push("/logout");
         });

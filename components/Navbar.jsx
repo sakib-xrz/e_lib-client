@@ -5,9 +5,11 @@ import { Button } from "./ui/button";
 
 import { AlignJustify } from "lucide-react";
 import Drawer from "./shared/Drawer";
+import Link from "next/link";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <>
       <div className="flex justify-around items-center py-5 shadow-lg">
@@ -15,14 +17,18 @@ const Navbar = () => {
           <AlignJustify onClick={() => setDrawerOpen(true)} />
         </div>
 
-        <h2 className="font-black text-2xl">E Lib</h2>
+        <Link href="/">
+          <h2 className="font-black text-2xl">E Lib</h2>
+        </Link>
         <div className="list-none md:flex gap-5 font-semibold text-muted-foreground hidden ">
           <li>Home</li>
           <li>About</li>
           <li>All Books</li>
           <li>Authors</li>
         </div>
-        <Button>Login</Button>
+        <Link href="/login">
+          <Button>Login</Button>
+        </Link>
       </div>
 
       <Drawer

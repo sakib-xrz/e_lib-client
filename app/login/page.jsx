@@ -17,11 +17,12 @@ import Container from "@/components/shared/Container";
 import { useState } from "react";
 import API from "@/common/kit/API";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { setTokenAndRedirect } from "@/common/helpers/Utils";
+import { useStore } from "@/context/StoreProvider";
 
 const Login = () => {
+  const { setUser } = useStore();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,8 +38,8 @@ const Login = () => {
   });
 
   const initialValues = {
-    email: "",
-    password: "",
+    email: "nusrat@gmail.com",
+    password: "123456",
   };
 
   const formik = useFormik({
@@ -62,16 +63,17 @@ const Login = () => {
               router.push(previousURL);
             } else {
               API.me.getMe().then(({ data }) => {
+                setUser(data);
                 if (data.role === "admin") {
                   router.push("/admin");
                 } else if (data.role === "author") {
                   router.push("/author");
+                } else {
+                  router.push(`/`);
                 }
-                router.push(`/`);
               });
             }
           });
-          return data;
         })
         .catch((error) => {
           throw error;
@@ -82,7 +84,7 @@ const Login = () => {
 
       toast.promise(promise, {
         loading: "Loading...",
-        success: (data) => data.message,
+        success: "Login Successful",
         error: (error) => error.message,
       });
     },
