@@ -17,9 +17,15 @@ import Container from "@/components/shared/Container";
 import { useState } from "react";
 import API from "@/common/kit/API";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { setJWTokenAndRedirect } from "@/common/helpers/Utils";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const previousURL = searchParams.get("next");
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -50,7 +56,21 @@ const Login = () => {
         .login(payload)
         .then((data) => {
           const token = data.data.access;
-          console.log(token);
+          // formik.resetForm();
+          setJWTokenAndRedirect(token, () => {
+            if (previousURL) {
+              router.push(previousURL);
+            } else {
+              API.me.getMe().then(({ data }) => {
+                if (data.role === "admin") {
+                  router.push("/admin");
+                } else if (data.role === "author") {
+                  router.push("/author");
+                }
+                router.push(`/`);
+              });
+            }
+          });
           return data;
         })
         .catch((error) => {

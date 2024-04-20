@@ -1,13 +1,51 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import API from "@/common/kit/API";
+import { createContext, useContext, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { AUTH_TOKEN_KEY } from "@/common/helpers/KeyChain";
+import { setJWTokenAndRedirect } from "@/common/helpers/Utils";
 
 const StoreContext = createContext();
 
 export default function StoreProvider({ children }) {
-  // store business logic here
+  const router = useRouter();
+  const [user, setUser] = useState(null);
 
-  const store = {};
+  const fetchMe = async (role) => {
+    try {
+      const { data } = await API.me.getMe();
+      if (role && data.role !== role) {
+        toast.error("You Don't have permission to access this.");
+        router.push("/logout");
+      }
+      setUser(data);
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+      router.push("/logout");
+    }
+  };
+
+  const refetchMe = (role) => {
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    if (token) {
+      setJWTokenAndRedirect(token)
+        .then(fetchMe(role))
+        .catch((error) => {
+          console.log(error?.response);
+        });
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    router.push("/login");
+  };
+
+  const store = { user, fetchMe, refetchMe, logout };
 
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
