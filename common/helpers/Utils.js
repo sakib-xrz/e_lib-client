@@ -11,12 +11,10 @@ export function deferred() {
   return _deferred;
 }
 
-export const setJWTokenAndRedirect = async (token, redirect = () => {}) => {
+export const setTokenAndRedirect = async (token, redirect = () => {}) => {
   try {
     const client = await API.setClientToken(token);
-    const authToken =
-      client.defaults.headers.common["Authorization"].split(" ")[1];
-    localStorage.setItem(AUTH_TOKEN_KEY, authToken);
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
     HTTP.defer.resolve(client);
     redirect();
   } catch (error) {

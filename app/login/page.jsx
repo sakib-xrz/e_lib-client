@@ -19,7 +19,7 @@ import API from "@/common/kit/API";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { setJWTokenAndRedirect } from "@/common/helpers/Utils";
+import { setTokenAndRedirect } from "@/common/helpers/Utils";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -56,8 +56,8 @@ const Login = () => {
         .login(payload)
         .then((data) => {
           const token = data.data.access;
-          // formik.resetForm();
-          setJWTokenAndRedirect(token, () => {
+          formik.resetForm();
+          setTokenAndRedirect(token, () => {
             if (previousURL) {
               router.push(previousURL);
             } else {

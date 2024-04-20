@@ -2,7 +2,7 @@
 "use client";
 
 import { AUTH_TOKEN_KEY } from "@/common/helpers/KeyChain";
-import { setJWTokenAndRedirect } from "@/common/helpers/Utils";
+import { setTokenAndRedirect } from "@/common/helpers/Utils";
 import { useStore } from "@/context/StoreProvider";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -15,7 +15,7 @@ export default function UserAuthGuard({ children }) {
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
 
     if (token) {
-      setJWTokenAndRedirect(token)
+      setTokenAndRedirect(token)
         .then(fetchMe("user"))
         .catch((_error) => {
           router.push("/logout");

@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { AUTH_TOKEN_KEY } from "@/common/helpers/KeyChain";
-import { setJWTokenAndRedirect } from "@/common/helpers/Utils";
+import { setTokenAndRedirect } from "@/common/helpers/Utils";
 
 const StoreContext = createContext();
 
@@ -31,7 +31,7 @@ export default function StoreProvider({ children }) {
   const refetchMe = (role) => {
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
     if (token) {
-      setJWTokenAndRedirect(token)
+      setTokenAndRedirect(token)
         .then(fetchMe(role))
         .catch((error) => {
           console.log(error?.response);
