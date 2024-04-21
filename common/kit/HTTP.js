@@ -1,6 +1,5 @@
 import axios from "axios";
-
-import { deferred } from "../helpers/Utils";
+import { AUTH_TOKEN_KEY } from "../helpers/KeyChain";
 
 let client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -10,16 +9,16 @@ let client = axios.create({
   },
 });
 
-const defer = new deferred();
-
-const setClientToken = (token) => {
+const setTokenAndRedirect = async (token, redirect = () => {}) => {
   try {
     client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    defer.resolve(client);
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+    redirect();
+    return client;
   } catch (error) {
-    defer.reject(error);
+    console.error("Error setting authorization token:", error);
+    throw error;
   }
-  return defer.promise;
 };
 
 client.interceptors.response.use(
@@ -45,8 +44,7 @@ client.interceptors.response.use(
 
 const HTTP = {
   client,
-  defer,
-  setClientToken,
+  setTokenAndRedirect,
 };
 
 export default HTTP;

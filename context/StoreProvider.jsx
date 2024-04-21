@@ -1,11 +1,11 @@
 "use client";
 
 import API from "@/common/kit/API";
+import HTTP from "@/common/kit/HTTP";
 import { createContext, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { AUTH_TOKEN_KEY } from "@/common/helpers/KeyChain";
-import { setTokenAndRedirect } from "@/common/helpers/Utils";
+import { toast } from "sonner";
 
 const StoreContext = createContext();
 
@@ -19,8 +19,9 @@ export default function StoreProvider({ children }) {
       if (role && data.role !== role) {
         toast.error("You Don't have permission to access this.");
         router.push("/logout");
+      } else {
+        setUser(data);
       }
-      setUser(data);
     } catch (error) {
       console.error(error);
       toast.error(error.message);
@@ -31,7 +32,7 @@ export default function StoreProvider({ children }) {
   const refetchMe = (role) => {
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
     if (token) {
-      setTokenAndRedirect(token)
+      HTTP.setTokenAndRedirect(token)
         .then(() => fetchMe(role))
         .catch((error) => {
           console.log(error?.response);

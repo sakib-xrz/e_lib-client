@@ -18,8 +18,8 @@ import { useState } from "react";
 import API from "@/common/kit/API";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { setTokenAndRedirect } from "@/common/helpers/Utils";
 import { useStore } from "@/context/StoreProvider";
+import HTTP from "@/common/kit/HTTP";
 
 const Login = () => {
   const { setUser } = useStore();
@@ -58,12 +58,12 @@ const Login = () => {
         .then((data) => {
           const token = data.data.access;
           formik.resetForm();
-          setTokenAndRedirect(token, () => {
-            if (previousURL) {
-              router.push(previousURL);
-            } else {
-              API.me.getMe().then(({ data }) => {
-                setUser(data);
+          HTTP.setTokenAndRedirect(token, () => {
+            API.me.getMe().then(({ data }) => {
+              setUser(data);
+              if (previousURL) {
+                router.push(previousURL);
+              } else {
                 if (data.role === "admin") {
                   router.push("/admin");
                 } else if (data.role === "author") {
@@ -71,8 +71,8 @@ const Login = () => {
                 } else {
                   router.push(`/`);
                 }
-              });
-            }
+              }
+            });
           });
         })
         .catch((error) => {
