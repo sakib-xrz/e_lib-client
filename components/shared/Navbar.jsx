@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex justify-around items-center py-5 shadow-lg">
+      <div className="flex justify-between items-center p-5 shadow-lg">
         <div className="md:hidden">
           <AlignJustify onClick={() => setDrawerOpen(true)} />
         </div>

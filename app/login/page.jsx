@@ -84,7 +84,7 @@ const Login = () => {
 
       toast.promise(promise, {
         loading: "Loading...",
-        success: "Login Successful",
+        success: "Logged in successfully!",
         error: (error) => error.message,
       });
     },
