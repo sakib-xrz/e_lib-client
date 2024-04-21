@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 import { AlignJustify } from "lucide-react";
-import Drawer from "./shared/Drawer";
+import Drawer from "./Drawer";
 import Link from "next/link";
+import { useStore } from "@/context/StoreProvider";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user } = useStore();
 
   return (
     <>
@@ -26,9 +28,15 @@ const Navbar = () => {
           <li>All Books</li>
           <li>Authors</li>
         </div>
-        <Link href="/login">
-          <Button>Login</Button>
-        </Link>
+        {user ? (
+          <Link href="/logout">
+            <Button>Logout</Button>
+          </Link>
+        ) : (
+          <Link href="/login">
+            <Button>Login</Button>
+          </Link>
+        )}
       </div>
 
       <Drawer

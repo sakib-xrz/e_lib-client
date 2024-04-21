@@ -45,14 +45,15 @@ const Register = () => {
   return (
     <Container>
       <Card className="max-w-xs xs:max-w-sm md:max-w-2xl mx-auto mt-20 space-y-5">
-        <h2 className="text-center mt-6 font-black text-3xl">E Lib</h2>
+        <Link href={"/"}>
+          <h2 className="text-center font-black text-3xl">E Lib</h2>
+        </Link>{" "}
         <CardHeader>
           <CardTitle>Create an account</CardTitle>
           <CardDescription>
             If you do not have any account, please register!
           </CardDescription>
         </CardHeader>
-
         <div>
           <form onSubmit={formik.handleSubmit}>
             <div className="grid w-full items-center gap-4">

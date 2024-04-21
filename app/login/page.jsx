@@ -93,7 +93,9 @@ const Login = () => {
   return (
     <Container>
       <Card className="max-w-xs xs:max-w-sm md:max-w-2xl mx-auto mt-20 space-y-5">
-        <h2 className="text-center font-black text-3xl">E Lib</h2>{" "}
+        <Link href={"/"}>
+          <h2 className="text-center font-black text-3xl">E Lib</h2>
+        </Link>{" "}
         <CardHeader>
           <CardTitle>Login Info</CardTitle>
           <CardDescription>
