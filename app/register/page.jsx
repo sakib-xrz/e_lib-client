@@ -13,6 +13,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
+import { useStore } from "@/context/StoreProvider";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import API from "@/common/kit/API";
+import HTTP from "@/common/kit/HTTP";
+import { toast } from "sonner";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -35,11 +41,57 @@ const initialValues = {
 };
 
 const Register = () => {
+  const { setUser } = useStore();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const previousURL = searchParams.get("next");
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      setLoading(true);
+
+      const payload = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      };
+
+      const promise = API.auth
+        .register(payload)
+        .then((data) => {
+          const token = data.data.access;
+          formik.resetForm();
+          HTTP.setTokenAndRedirect(token, () => {
+            API.me.getMe().then(({ data }) => {
+              setUser(data);
+              if (previousURL) {
+                router.push(previousURL);
+              } else {
+                if (data.role === "admin") {
+                  router.push("/admin");
+                } else if (data.role === "author") {
+                  router.push("/author");
+                } else {
+                  router.push(`/`);
+                }
+              }
+            });
+          });
+        })
+        .catch((error) => {
+          throw error;
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: "Registered successfully!",
+        error: (error) => error.message,
+      });
     },
   });
   return (
@@ -98,7 +150,7 @@ const Register = () => {
                 <Password
                   id="password"
                   name="password"
-                  placeholder="min 8 characters"
+                  placeholder="min 6 characters"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
@@ -121,8 +173,8 @@ const Register = () => {
               </div>
             </div>
             <div className="mt-2">
-              <Button type="submit" className="w-full">
-                Register
+              <Button type="submit" className="w-full" isLoading={loading}>
+                {loading ? "Loading..." : "Register"}
               </Button>
             </div>
           </form>
