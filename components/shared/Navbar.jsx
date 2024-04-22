@@ -31,30 +31,24 @@ const Navbar = () => {
           <h2 className="font-black text-2xl">E Lib</h2>
         </Link>
 
-        <div className="flex items-center gap-4">
-          <div>
-            <div className="md:hidden">
-              <AlignJustify onClick={() => setDrawerOpen(true)} />
-            </div>
-            <div className="list-none md:flex gap-5 font-semibold text-muted-foreground hidden ">
-              <li>Home</li>
-              <li>About</li>
-              <li>All Books</li>
-              <li>Authors</li>
-            </div>
-          </div>
-          <div>
-            {user ? (
-              <div className="hidden md:block">
-                <UserDropdown />
-              </div>
-            ) : (
-              <Link href="/login">
-                <Button>Login</Button>
-              </Link>
-            )}
-          </div>
+        <div className="md:hidden">
+          <AlignJustify onClick={() => setDrawerOpen(true)} />
         </div>
+        <div className="list-none md:flex gap-5 font-semibold text-muted-foreground hidden ">
+          <li>Home</li>
+          <li>About</li>
+          <li>All Books</li>
+          <li>Authors</li>
+        </div>
+        {user ? (
+          <div className="hidden md:block">
+            <UserDropdown />
+          </div>
+        ) : (
+          <Link href="/login">
+            <Button>Login</Button>
+          </Link>
+        )}
       </div>
 
       <Drawer
