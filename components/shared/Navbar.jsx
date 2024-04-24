@@ -26,19 +26,21 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center p-5 shadow-lg">
-        <Link href="/">
+      <div className="grid md:grid-cols-6 justify-center items-center p-5 shadow-lg">
+        <Link href="/" className="md:col-span-1">
           <h2 className="font-black text-2xl">E Lib</h2>
         </Link>
 
         <div className="md:hidden">
           <AlignJustify onClick={() => setDrawerOpen(true)} />
         </div>
-        <div className="list-none md:flex gap-5 font-semibold text-muted-foreground hidden ">
-          <li>Home</li>
-          <li>About</li>
-          <li>All Books</li>
-          <li>Authors</li>
+        <div className="md:col-span-4 justify-center">
+          <div className="md:flex gap-5 font-semibold text-muted-foreground hidden ">
+            <p>Home</p>
+            <p>About</p>
+            <p>All Books</p>
+            <p>Authors</p>
+          </div>
         </div>
         {user ? (
           <div className="hidden md:block">
@@ -56,6 +58,7 @@ const Navbar = () => {
         setOpen={setDrawerOpen}
         title={<UserCard />}
         side="right"
+        className="md:col-span-1 justify-end"
       >
         {user &&
           navOptions.map((route, index) => (
@@ -90,7 +93,7 @@ const Navbar = () => {
         </div>
         <Link
           href="/logout"
-          className="absolute bottom-5 right-5 mx-auto w-fit"
+          className="absolute bottom-5 right-5 mx-auto w-fit "
         >
           <Button variant="destructive" className="w-full gap-2">
             <ArrowRightFromLine /> Logout
