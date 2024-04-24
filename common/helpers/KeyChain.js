@@ -11,7 +11,7 @@ export const navOptions = [
   {
     icon: UserRound,
     name: "My Profile",
-    href: "/my-profile",
+    href: "/user/my-profile",
   },
   {
     icon: NotebookTabs,
