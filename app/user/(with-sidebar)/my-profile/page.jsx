@@ -1,16 +1,39 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Password } from "@/components/ui/password";
 import { useStore } from "@/context/StoreProvider";
 import { SquarePen } from "lucide-react";
+import API from "@/common/kit/API";
+import { toast } from "sonner";
 import Image from "next/image";
+import { useState } from "react";
 
 const MyProfile = () => {
-  const { user } = useStore();
-  console.log(user);
+  const { user, refetchMe } = useStore();
+  const [picture, setPicture] = useState(user?.profile_picture);
+
+  const handleProfileImageUpload = (event) => {
+    const formData = new FormData();
+    formData.append("profile-picture", event.target.files[0]);
+    const promise = API.me
+      .updateProfilePicture(formData)
+      .then(({ data }) => {
+        refetchMe("user");
+        setPicture(data?.profile_picture);
+      })
+      .catch((error) => {
+        throw error;
+      });
+
+    return toast.promise(promise, {
+      loading: "Updating profile picture...",
+      success: "Profile picture updated successfully!",
+      error: "Something went wrong!",
+    });
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-semibold">Personal Profile Information</h1>
@@ -20,6 +43,7 @@ const MyProfile = () => {
       </p>
       <div className="flex justify-center">
         <div className="relative">
+          {/* Display the user's profile picture */}
           <Image
             className="h-64 w-64 rounded-full border border-border object-cover object-center"
             src={user?.profile_picture}
@@ -28,9 +52,23 @@ const MyProfile = () => {
             alt="profile-image"
           />
 
-          <Button variant="secondary" className="absolute bottom-4 right-4">
-            <SquarePen className="text-muted-foreground" />
-          </Button>
+          {/* Button for uploading a new profile picture */}
+          <label
+            htmlFor="upload-profile-picture"
+            className="absolute bottom-4 right-4 cursor-pointer"
+          >
+            <Button variant="secondary">
+              <SquarePen className="text-muted-foreground" />
+            </Button>
+            {/* Hidden file input for profile picture upload */}
+            <input
+              id="upload-profile-picture"
+              type="file"
+              accept="image/*"
+              onChange={handleProfileImageUpload}
+              className="hidden"
+            />
+          </label>
         </div>
       </div>
       <form className="space-y-5 pt-4 md:pt-8">

@@ -23,6 +23,16 @@ const API = {
       const url = "/me";
       return client.get(url);
     },
+
+    updateProfilePicture: (payload) => {
+      const url = "/me/profile-picture";
+      return client.patch(url, payload, defaultFileUploadConfig);
+    },
+
+    changePassword: (payload) => {
+      const url = "/me/change-password";
+      return client.patch(url, payload, defaultFileUploadConfig);
+    },
   },
 };
 
