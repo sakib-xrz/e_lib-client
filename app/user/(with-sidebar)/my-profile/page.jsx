@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Password } from "@/components/ui/password";
 import { useStore } from "@/context/StoreProvider";
-import { SquarePen } from "lucide-react";
+import { Camera } from "lucide-react";
 import API from "@/common/kit/API";
 import { toast } from "sonner";
 import Image from "next/image";
@@ -16,25 +16,29 @@ const MyProfile = () => {
   const [showActionButtons, setShowActionButtons] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // const handleProfileImageUpload = (event) => {
-  //   const formData = new FormData();
-  //   formData.append("profile-picture", event.target.files[0]);
-  //   const promise = API.me
-  //     .updateProfilePicture(formData)
-  //     .then(({ data }) => {
-  //       refetchMe("user");
-  //       setPicture(data?.profile_picture);
-  //     })
-  //     .catch((error) => {
-  //       throw error;
-  //     });
+  const handleProfileImageUpload = (event) => {
+    // const formData = new FormData();
+    // formData.append("profile_picture", event.target.files[0]);
+    setLoading(true);
+    const payload = { profile_picture: event.target.files[0] };
+    const promise = API.me
+      .updateProfilePicture(payload)
+      .then(() => {
+        refetchMe();
+      })
+      .catch((error) => {
+        throw error;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
-  //   return toast.promise(promise, {
-  //     loading: "Updating profile picture...",
-  //     success: "Profile picture updated successfully!",
-  //     error: "Something went wrong!",
-  //   });
-  // };
+    return toast.promise(promise, {
+      loading: "Updating profile picture...",
+      success: "Profile picture updated successfully!",
+      error: "Something went wrong!",
+    });
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -75,7 +79,7 @@ const MyProfile = () => {
         Welcome to your personal profile information hub! This is the space
         where you can effortlessly check and refine your personal details.
       </p>
-      {/* <div className="flex justify-center">
+      <div className="flex justify-center">
         <div className="relative">
           <Image
             className="h-64 w-64 rounded-full border border-border object-cover object-center"
@@ -86,22 +90,29 @@ const MyProfile = () => {
           />
 
           <label
-            htmlFor="upload-profile-picture"
+            htmlFor="profile_picture"
             className="absolute bottom-4 right-4 cursor-pointer"
           >
-            <Button variant="secondary">
-              <SquarePen className="text-muted-foreground" />
-            </Button>
             <input
-              id="upload-profile-picture"
+              id="profile_picture"
               type="file"
               accept="image/*"
-              onChange={handleProfileImageUpload}
+              onChange={handleProfileImageUpload} // Move onChange to the input element
               className="hidden"
+              disabled={loading}
             />
+            <Button
+              variant="secondary"
+              size="icon"
+              onClick={() => document.getElementById("profile_picture").click()}
+              className={"rounded-full disabled:cursor-not-allowed"}
+              disabled={loading}
+            >
+              <Camera className="text-muted-foreground" />{" "}
+            </Button>
           </label>
         </div>
-      </div> */}
+      </div>
       <div className="space-y-5 pt-4 md:pt-8">
         <div className="flex flex-col md:space-x-10 gap-2 md:flex-row md:items-center md:gap-3">
           <Label className="md:w-3/12">Name :</Label>

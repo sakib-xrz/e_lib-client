@@ -1,9 +1,9 @@
-import React from "react";
+import Card from "./components/Card";
 
 const Blog = () => {
   return (
     <div>
-      <h1 className="text-2xl">This is Blog Page!!!</h1>
+      <Card />
     </div>
   );
 };
