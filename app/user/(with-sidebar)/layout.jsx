@@ -1,11 +1,9 @@
 import Container from "@/components/shared/Container";
 import Sidebar from "./components/Sidebar";
-import Navbar from "@/components/shared/Navbar";
 
 const UserLayoutWithSidebar = ({ children }) => {
   return (
     <div>
-      <Navbar />
       <div className="flex justify-center">
         <div className="hidden bg-white md:w-1/5 lg:block">
           <Sidebar />

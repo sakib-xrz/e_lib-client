@@ -12,8 +12,10 @@ const StoreContext = createContext();
 export default function StoreProvider({ children }) {
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const [isMeLoading, setIsMeLoading] = useState(false);
 
   const fetchMe = async (role) => {
+    setIsMeLoading(true);
     try {
       const { data } = await API.me.getMe();
       if (role && data.role !== role) {
@@ -26,6 +28,8 @@ export default function StoreProvider({ children }) {
       console.error(error);
       toast.error(error.message);
       router.push("/logout");
+    } finally {
+      setIsMeLoading(false);
     }
   };
 
@@ -46,7 +50,7 @@ export default function StoreProvider({ children }) {
     router.push("/login");
   };
 
-  const store = { user, setUser, fetchMe, refetchMe, logout };
+  const store = { user, isMeLoading, setUser, fetchMe, refetchMe, logout };
 
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>

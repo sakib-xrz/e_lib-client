@@ -5,7 +5,6 @@ export default function AdminLayout({ children }) {
     <AdminAuthGuard>
       <h2>Admin Navbar Here</h2>
       {children}
-      <h2>Admin Footer Here</h2>
     </AdminAuthGuard>
   );
 }

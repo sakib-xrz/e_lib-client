@@ -1,11 +1,11 @@
 import UserAuthGuard from "@/components/hoc/UserAuthGuard";
+import Navbar from "@/components/shared/Navbar";
 
 export default function UserLayout({ children }) {
   return (
     <UserAuthGuard>
-      <h2>User Navbar Here</h2>
+      <Navbar />
       {children}
-      <h2>User Footer Here</h2>
     </UserAuthGuard>
   );
 }

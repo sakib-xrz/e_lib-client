@@ -7,9 +7,19 @@ import Link from "next/link";
 import { useStore } from "@/context/StoreProvider";
 import { Menu, Transition } from "@headlessui/react";
 import { navOptions } from "@/common/helpers/KeyChain";
+import { LogOut } from "lucide-react";
 
 const UserDropdown = () => {
   const { user } = useStore();
+
+  const newNavOptions = [
+    ...navOptions,
+    {
+      icon: LogOut,
+      name: "Logout",
+      href: "/logout",
+    },
+  ];
 
   return (
     <Menu as="div" className={"relative"}>
@@ -49,7 +59,7 @@ const UserDropdown = () => {
             "absolute right-0 z-50 mt-4 w-full origin-top-right rounded-md bg-gray-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           }
         >
-          {navOptions.map((route, index) => (
+          {newNavOptions.map((route, index) => (
             <Menu.Item key={index + 1}>
               <Link
                 href={route.href}
