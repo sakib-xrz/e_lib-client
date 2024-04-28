@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 
 import {
-  AlignJustify,
   ArrowRightFromLine,
   BookA,
   BookUp2,
   Home,
   LogOut,
+  Menu,
   PenLine,
 } from "lucide-react";
 import Drawer from "./Drawer";
@@ -35,31 +35,34 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="grid md:grid-cols-6 justify-center items-center p-5 shadow-lg h-[5.5rem]">
-        <Link href="/" className="md:col-span-1 w-fit mr-auto">
+      <div className="grid grid-cols-12 p-5 shadow-lg h-[5.5rem] w-full items-center">
+        <Link href="/" className="w-fit mr-auto col-span-6 lg:col-span-3">
           <h2 className="font-black text-2xl">E Lib</h2>
         </Link>
+        <div className="gap-5 font-semibold text-muted-foreground hidden lg:flex justify-center items-center col-span-6">
+          <p>Home</p>
+          <p>About</p>
+          <p>All Books</p>
+          <p>Authors</p>
+        </div>
+        <div className="ml-auto col-span-3 hidden lg:block ">
+          {user ? (
+            <div className="w-fit">
+              <UserDropdown />
+            </div>
+          ) : (
+            <Link href="/login" className="w-fit">
+              <Button>Login</Button>
+            </Link>
+          )}
+        </div>
 
-        <div className="md:hidden">
-          <AlignJustify onClick={() => setDrawerOpen(true)} />
+        <div
+          className="w-fit col-span-6 block lg:hidden cursor-default ml-auto"
+          onClick={() => setDrawerOpen(true)}
+        >
+          <Menu className="w-6 h-6" />
         </div>
-        <div className="md:col-span-4 justify-center">
-          <div className="md:flex gap-5 font-semibold text-muted-foreground hidden ">
-            <p>Home</p>
-            <p>About</p>
-            <p>All Books</p>
-            <p>Authors</p>
-          </div>
-        </div>
-        {user ? (
-          <div className="hidden md:block ml-auto w-fit">
-            <UserDropdown />
-          </div>
-        ) : (
-          <Link href="/login" className="w-fit ml-auto">
-            <Button>Login</Button>
-          </Link>
-        )}
       </div>
 
       <Drawer
@@ -67,7 +70,7 @@ const Navbar = () => {
         setOpen={setDrawerOpen}
         title={<UserCard />}
         side="right"
-        className="md:col-span-1 justify-end"
+        className="lg:col-span-1 justify-end"
       >
         {user &&
           newNavOptions.map((route, index) => (

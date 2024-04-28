@@ -26,14 +26,16 @@ const UserDropdown = () => {
       <div>
         <Menu.Button>
           <div className="flex items-center gap-2 rounded-md border border-border p-2">
-            <Image
-              src={user?.profile_picture}
-              alt="user-profile"
-              width={100}
-              height={100}
-              priority
-              className="border-primary-600 h-8 w-8 rounded-full border-2 object-cover"
-            />
+            <div className="h-8 w-8">
+              <Image
+                src={user?.profile_picture}
+                alt="user-profile"
+                width={100}
+                height={100}
+                priority
+                className="border-primary-600 h-8 w-8 rounded-full border-2 object-cover"
+              />
+            </div>
             <div className="pr-2">
               <p className="text-start text-xs font-semibold text-gray-700">
                 {user?.name}
