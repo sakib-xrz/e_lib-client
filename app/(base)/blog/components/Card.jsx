@@ -1,10 +1,15 @@
 import Image from "next/image";
 import image from "../../../../public/images/joshua-hanson-e616t35Vbeg-unsplash.jpg";
 import author from "../../../../public/images/michael-dam-mEZ3PoFGs_k-unsplash.jpg";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const Card = () => {
   return (
-    <div className="border-2 border-border max-w-sm rounded-xl m-12 p-4 space-y-3 bg-fixed opacity-100 transition duration-300 ease-in-out hover:opacity-80">
+    <Link
+      href={`/blog/1`}
+      className="block border-2 border-border max-w-sm rounded-xl m-12 p-4 space-y-3 cursor-pointer hover:bg-secondary/60"
+    >
       <div>
         <Image
           className="w-96 h-64 rounded-xl"
@@ -16,7 +21,7 @@ const Card = () => {
       </div>
 
       <div>
-        <p className="text-sm">Category</p>
+        <Badge className={"bg-green-500"}>Tech</Badge>
       </div>
 
       <div>
@@ -50,7 +55,7 @@ const Card = () => {
           <p className="text-xs ">July 21, 2023</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
