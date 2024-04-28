@@ -1,6 +1,6 @@
 import Image from "next/image";
-import image from "../../../../public/images/joshua-hanson-e616t35Vbeg-unsplash.jpg";
-import author from "../../../../public/images/michael-dam-mEZ3PoFGs_k-unsplash.jpg";
+import blog from "@/public/images/blog-img.jpeg";
+import author from "@/public/images/author.jpg";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
@@ -8,20 +8,18 @@ const Card = () => {
   return (
     <Link
       href={`/blog/1`}
-      className="block border-2 border-border max-w-sm rounded-xl m-12 p-4 space-y-3 cursor-pointer hover:bg-secondary/60"
+      className="block border-2 border-border max-w-sm rounded-xl p-4 space-y-3 cursor-pointer hover:bg-secondary/60"
     >
       <div>
         <Image
-          className="w-96 h-64 rounded-xl"
-          src={image}
+          className="rounded-xl aspect-video"
+          src={blog}
           alt="photographer"
-          height={500}
-          width={500}
         />
       </div>
 
       <div>
-        <Badge className={"bg-green-500"}>Tech</Badge>
+        <Badge>Tech</Badge>
       </div>
 
       <div>
@@ -31,7 +29,7 @@ const Card = () => {
         </p>
       </div>
 
-      <div className="border-l-4 border-black">
+      <div className="border-l-4 border-border">
         <p className="text-sm line-clamp-2 pl-2">
           Photography is the art, application, and practice of creating images
           by recording light, either electronically by means of an image sensor,
@@ -43,11 +41,9 @@ const Card = () => {
       <div className="flex items-center gap-2 pt-2">
         <div>
           <Image
-            className="w-12 h-12 rounded-xl"
+            className="w-12 h-12 rounded-xl object-cover object-top"
             src={author}
             alt="author"
-            height={500}
-            width={500}
           />
         </div>
         <div>

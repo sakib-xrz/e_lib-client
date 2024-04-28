@@ -1,5 +1,5 @@
 import Image from "next/image";
-import author from "../../../../public/images/michael-dam-mEZ3PoFGs_k-unsplash.jpg";
+import author from "@/public/images/author.jpg";
 
 const AuthorCard = () => {
   return (
@@ -8,7 +8,7 @@ const AuthorCard = () => {
       <div className="flex items-center gap-2 pt-2">
         <div>
           <Image
-            className="w-12 h-12 rounded-xl"
+            className="w-12 h-12 rounded-xl object-cover object-top aspect-square"
             src={author}
             alt="author"
             height={500}
