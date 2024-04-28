@@ -13,17 +13,10 @@ import {
 } from "lucide-react";
 import Drawer from "./Drawer";
 import Link from "next/link";
-import { useStore } from "@/context/StoreProvider";
-
-import UserDropdown from "../user/UserDropdown";
 import UserCard from "../user/UserCard";
-import { navOptions } from "@/common/helpers/KeyChain";
-import Logout from "@/app/logout/page";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { user } = useStore();
-
   return (
     <>
       <div className="flex justify-between items-center p-5 shadow-lg">
@@ -40,15 +33,9 @@ const Navbar = () => {
           <li>All Books</li>
           <li>Authors</li>
         </div>
-        {user ? (
-          <div className="hidden md:block">
-            <UserDropdown />
-          </div>
-        ) : (
-          <Link href="/login">
-            <Button>Login</Button>
-          </Link>
-        )}
+        <Link href="/login">
+          <Button>Login</Button>
+        </Link>
       </div>
 
       <Drawer
@@ -57,19 +44,6 @@ const Navbar = () => {
         title={<UserCard />}
         side="right"
       >
-        {user &&
-          navOptions.map((route, index) => (
-            <Link
-              key={index + 1}
-              href={route.href}
-              className={`flex w-full items-center gap-2 bg-white p-4 text-center text-sm font-medium text-gray-700 duration-300 first:rounded-t-sm last:rounded-b-sm ${
-                route.href === "/logout" ? "hidden" : "hover:bg-secondary/80"
-              }`}
-            >
-              <route.icon className="h-5 w-5" />
-              {route.name}
-            </Link>
-          ))}
         <div className="list-none flex-col space-y-1 text-sm font-medium text-gray-700 border-t pt-3 ">
           <div className="flex items-center gap-2 hover:bg-secondary/80 p-3">
             <Home />
