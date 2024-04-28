@@ -31,7 +31,7 @@ const API = {
 
     changePassword: (payload) => {
       const url = "/me/change-password";
-      return client.patch(url, payload, defaultFileUploadConfig);
+      return client.patch(url, payload);
     },
   },
 };

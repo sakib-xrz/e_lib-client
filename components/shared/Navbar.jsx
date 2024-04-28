@@ -40,8 +40,8 @@ const Navbar = () => {
           <h2 className="font-black text-2xl">E Lib</h2>
         </Link>
         <div className="gap-5 font-semibold text-muted-foreground hidden lg:flex justify-center items-center col-span-6">
-          <p>Home</p>
-          <p>About</p>
+          <Link href={"/"}>Home</Link>
+          <Link href={"/blog"}>Blog</Link>
           <p>All Books</p>
           <p>Authors</p>
         </div>
@@ -86,14 +86,20 @@ const Navbar = () => {
             </Link>
           ))}
         <div className="list-none flex-col space-y-1 text-sm font-medium text-gray-700 border-t pt-3 ">
-          <div className="flex items-center gap-2 hover:bg-secondary/80 p-3">
+          <Link
+            href={"/"}
+            className="flex items-center gap-2 hover:bg-secondary/80 p-3"
+          >
             <Home />
             Home
-          </div>
-          <div className="flex items-center gap-2 hover:bg-secondary/80 p-3">
+          </Link>
+          <Link
+            href={"/blog"}
+            className="flex items-center gap-2 hover:bg-secondary/80 p-3"
+          >
             <BookA />
-            About
-          </div>
+            Blog
+          </Link>
           <div className="flex items-center gap-2 hover:bg-secondary/80 p-3">
             <BookUp2 />
             All Books

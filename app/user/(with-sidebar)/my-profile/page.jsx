@@ -9,30 +9,64 @@ import API from "@/common/kit/API";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useState } from "react";
+import { useFormik } from "formik";
 
 const MyProfile = () => {
   const { user, refetchMe } = useStore();
-  const [picture, setPicture] = useState(user?.profile_picture);
+  const [showActionButtons, setShowActionButtons] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleProfileImageUpload = (event) => {
-    const formData = new FormData();
-    formData.append("profile-picture", event.target.files[0]);
-    const promise = API.me
-      .updateProfilePicture(formData)
-      .then(({ data }) => {
-        refetchMe("user");
-        setPicture(data?.profile_picture);
-      })
-      .catch((error) => {
-        throw error;
+  // const handleProfileImageUpload = (event) => {
+  //   const formData = new FormData();
+  //   formData.append("profile-picture", event.target.files[0]);
+  //   const promise = API.me
+  //     .updateProfilePicture(formData)
+  //     .then(({ data }) => {
+  //       refetchMe("user");
+  //       setPicture(data?.profile_picture);
+  //     })
+  //     .catch((error) => {
+  //       throw error;
+  //     });
+
+  //   return toast.promise(promise, {
+  //     loading: "Updating profile picture...",
+  //     success: "Profile picture updated successfully!",
+  //     error: "Something went wrong!",
+  //   });
+  // };
+
+  const formik = useFormik({
+    initialValues: {
+      currentPassword: "",
+      newPassword: "",
+    },
+
+    onSubmit: (values) => {
+      setLoading(true);
+
+      const payload = {
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      };
+
+      const promise = API.me
+        .changePassword(payload)
+        .then((_data) => formik.resetForm())
+        .catch((error) => {
+          throw error;
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: "Password change successfully!",
+        error: (error) => error.message,
       });
-
-    return toast.promise(promise, {
-      loading: "Updating profile picture...",
-      success: "Profile picture updated successfully!",
-      error: "Something went wrong!",
-    });
-  };
+    },
+  });
 
   return (
     <div>
@@ -41,9 +75,8 @@ const MyProfile = () => {
         Welcome to your personal profile information hub! This is the space
         where you can effortlessly check and refine your personal details.
       </p>
-      <div className="flex justify-center">
+      {/* <div className="flex justify-center">
         <div className="relative">
-          {/* Display the user's profile picture */}
           <Image
             className="h-64 w-64 rounded-full border border-border object-cover object-center"
             src={user?.profile_picture}
@@ -52,7 +85,6 @@ const MyProfile = () => {
             alt="profile-image"
           />
 
-          {/* Button for uploading a new profile picture */}
           <label
             htmlFor="upload-profile-picture"
             className="absolute bottom-4 right-4 cursor-pointer"
@@ -60,7 +92,6 @@ const MyProfile = () => {
             <Button variant="secondary">
               <SquarePen className="text-muted-foreground" />
             </Button>
-            {/* Hidden file input for profile picture upload */}
             <input
               id="upload-profile-picture"
               type="file"
@@ -70,8 +101,8 @@ const MyProfile = () => {
             />
           </label>
         </div>
-      </div>
-      <form className="space-y-5 pt-4 md:pt-8">
+      </div> */}
+      <div className="space-y-5 pt-4 md:pt-8">
         <div className="flex flex-col md:space-x-10 gap-2 md:flex-row md:items-center md:gap-3">
           <Label className="md:w-3/12">Name :</Label>
           <h1>{user?.name}</h1>
@@ -80,29 +111,58 @@ const MyProfile = () => {
           <Label className="md:w-3/12">Email :</Label>
           <h1>{user?.email}</h1>
         </div>
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
-          <Label className="md:w-2/5">Current Password :</Label>
-          <div className="w-full">
-            <Password />
+
+        <form onSubmit={formik.handleSubmit} className="space-y-5 ">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+            <Label className="md:w-2/5">Current Password :</Label>
+            <div className="w-full">
+              <Password
+                id="currentPassword"
+                name="currentPassword"
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  setShowActionButtons(true);
+                }}
+                value={formik.values.currentPassword}
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
-          <Label className="md:w-2/5">New Password :</Label>
-          <div className="w-full">
-            <Password />
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+            <Label className="md:w-2/5">New Password :</Label>
+            <div className="w-full">
+              <Password
+                id="newPassword"
+                name="newPassword"
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  setShowActionButtons(true);
+                }}
+                value={formik.values.newPassword}
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex justify-end">
-          <div className="space-x-3">
-            <Button type="button" variant="secondary">
-              Cancel
-            </Button>
-            <Button type="submit" variant="default">
-              Save
-            </Button>
+          <div
+            className={`${
+              showActionButtons ? "flex" : "hidden"
+            }  items-center justify-end gap-2 pt-2`}
+          >
+            <div className="space-x-3">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  formik.resetForm(), setShowActionButtons(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button isLoading={loading} type="submit" variant="default">
+                {loading ? "Saving" : "Save"}
+              </Button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
