@@ -23,7 +23,7 @@ const Card = () => {
       </div>
 
       <div>
-        <p className="text-xl font-extrabold leading-6 ">
+        <p className="text-xl font-extrabold">
           Give a shoutout to Joshua Hanson on social or copy the text below to
           attribute.
         </p>

@@ -8,7 +8,7 @@ const BlogDetailsPage = ({ params: { slug } }) => {
   console.log(slug);
   return (
     <Container>
-      <h1 className="text-5xl font-extrabold leading-snug">
+      <h1 className="text-5xl font-extrabold">
         Give a shoutout to Joshua Hanson on social or copy the text below to
         attribute.
       </h1>
