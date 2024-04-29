@@ -57,3 +57,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+.ql-toolbar.ql-snow {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-color: rgb(226, 232, 240) !important;
+}
+
+.ql-container.ql-snow {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-color: rgb(226, 232, 240) !important;
+}
+
+.ql-editor {
+  min-height: 10rem;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgb(2, 8, 23) !important;
+}

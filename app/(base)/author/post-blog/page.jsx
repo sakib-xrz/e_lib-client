@@ -1,14 +1,25 @@
 "use client";
 
 import Container from "@/components/shared/Container";
+import CreatableSelectField from "@/components/shared/CreatableSelectField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useStore } from "@/context/StoreProvider";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import CreatableSelect from "react-select/creatable";
 
-const UploadBookForm = () => {
+const PostBlog = () => {
+  const { user } = useStore();
+
+  console.log(
+    JSON.stringify({
+      name: user?.name,
+      email: user?.email,
+      profile_picture: user?.profile_picture,
+    })
+  );
+
   const [value, setValue] = useState("");
   const options = [
     { value: "chocolate", label: "Chocolate" },
@@ -46,13 +57,13 @@ const UploadBookForm = () => {
         </div>
 
         <div>
-          <label className="font-semibold" htmlFor="description">
-            Description
+          <label className="font-semibold" htmlFor="content">
+            Content
           </label>
           <ReactQuill
             className="mt-1"
             theme="snow"
-            placeholder="write here your book..."
+            placeholder="Write your blog content here..."
             value={value}
             onChange={setValue}
           />
@@ -62,7 +73,7 @@ const UploadBookForm = () => {
           <label className="font-semibold" htmlFor="blog-tags">
             Blog Tags
           </label>
-          <CreatableSelect
+          <CreatableSelectField
             id="blog_tags"
             name="blog_tags"
             placeholder="e.g. Popular, Trending"
@@ -71,6 +82,9 @@ const UploadBookForm = () => {
             isSearchable
             options={options}
             className="mt-1"
+            onChange={(selectedField) =>
+              console.log(JSON.stringify(selectedField))
+            }
           />
         </div>
 
@@ -89,4 +103,4 @@ const UploadBookForm = () => {
   );
 };
 
-export default UploadBookForm;
+export default PostBlog;
