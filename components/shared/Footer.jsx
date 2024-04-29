@@ -11,7 +11,7 @@ const Footer = () => {
 
         <div className="text-muted-foreground font-semibold flex whitespace-nowrap gap-4 lg:gap-8 justify-center flex-wrap col-span-12 md:col-span-8">
           <p>Terms of Service</p>
-          <p>Privacy Popcy</p>
+          <p>Privacy Policy</p>
           <p>Contacts</p>
           <p>FAQ</p>
         </div>
